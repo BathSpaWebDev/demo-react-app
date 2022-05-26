@@ -1,25 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import Section from './components/section';
+import { useState, useEffect  } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [movies, setMovies] = useState(null);
+  
+    useEffect(()=>{
+        fetch('https://showtimes.everyday.in.th/api/v2/movie/')
+            .then(response => {
+                if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => setMovies(data.results))
+            .catch( err => console.error(`Fetch problem: ${err.message}`) );
+       
+    },[])
+
+    return (
+        <div className="App">
+            <div className="container">
+                <h2>Historical events</h2>
+
+                {movies !== null && movies.map((movie, i) => {
+                    return (
+                        <div key={i}>
+                            {movie.title}
+                            {movie.id}
+                        </div>
+                    )
+                })}
+
+            </div>  
+        </div>
+    );
 }
 
 export default App;
