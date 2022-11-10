@@ -1,5 +1,4 @@
 import './App.css';
-import Section from './components/section';
 import { useState, useEffect  } from 'react';
 
 function App() {
